@@ -22,8 +22,7 @@ public class CamMove : MonoBehaviour {
     // Use this for initialization
     void Start() {
         previewRoad = Instantiate(roadPrefabs[0]);
-        roadSize = previewRoad.GetComponent<BoxCollider2D>().bounds.size;
-        Debug.Log(roadSize);
+        roadSize = previewRoad.GetComponent<BoxCollider>().bounds.size;
     }
 
     // Update is called once per frame
@@ -35,9 +34,11 @@ public class CamMove : MonoBehaviour {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit)) {
             int posRoad = PosRoad(hit.collider.transform.position, cursorWorldPos);
-            if (Input.GetKeyDown(KeyCode.Mouse0)) {
-                if (!hit.collider.GetComponent<TileManager>().CheckRoad(posRoad)) {
-                    CreateRoad(0, posRoad);
+            if (posRoad < 4 ) {
+                if (Input.GetKeyDown(KeyCode.Mouse0)) {
+                    if (!hit.collider.GetComponent<TileManager>().CheckRoad(posRoad)) {
+                        CreateRoad(0, posRoad);
+                    }
                 }
             }
         }
@@ -48,7 +49,7 @@ public class CamMove : MonoBehaviour {
         newRoad.transform.rotation = previewRoad.transform.rotation;
         hit.collider.gameObject.GetComponent<TileManager>().UpdateTileState(pos);
         string[] name = hit.collider.gameObject.name.Split('_');
-        int[] nameInt = { System.Int32.Parse(name[0]), System.Int32.Parse(name[1]) };
+        int[] nameInt = { int.Parse(name[0]), int.Parse(name[1]) };
         Debug.Log(nameInt[0] + " " + nameInt[1]);
         Debug.Log(maxY);
         switch (pos) {
@@ -72,7 +73,15 @@ public class CamMove : MonoBehaviour {
                     GameObject.Find(nameInt[0] + "_" + (nameInt[1] - 1)).GetComponent<TileManager>().UpdateTileState(1);
                 }
                 break;
-
+            default:
+                break;
+        }
+    }
+    private bool ExistRoad(int pos) {
+        try {
+            return hit.collider.gameObject.GetComponent<TileManager>().CheckRoad(pos);
+        } catch {
+            return true;
         }
     }
     private int PosRoad(Vector3 obj, Vector2 cursor) {
@@ -84,31 +93,44 @@ public class CamMove : MonoBehaviour {
         Vector2 roadPos = new Vector2(previewRoad.transform.position.x - obj.x, previewRoad.transform.position.y - obj.y);
         if (IsInTriangle(new Vector2(0, 0),
                               new Vector2(0, tileSize),
-                              new Vector2(tileSize / 2, tileSize / 2),
-                              new Vector2(x, y))) {
+                              new Vector2(Mathf.Round(tileSize / 2), Mathf.Round(tileSize / 2)),
+                              new Vector2(x, y))&& !ExistRoad(0)) {
             previewRoad.transform.position = new Vector3(previewRoad.transform.position.x + roadSize.y / 2,
-                                                        previewRoad.transform.position.y, -5);
+                                                         previewRoad.transform.position.y, -5);
             previewRoad.transform.rotation = Quaternion.Euler(0, 0, 90);
+            Debug.Log("Left");
             return 0;
 
         } else if (IsInTriangle(new Vector2(0, tileSize),
-                              new Vector2(tileSize / 2, tileSize / 2),
+                              new Vector2(Mathf.Round(tileSize / 2), Mathf.Round(tileSize / 2)),
                               new Vector2(tileSize, tileSize),
-                              new Vector2(x, y))) {
-            previewRoad.transform.position = new Vector3(previewRoad.transform.position.x, previewRoad.transform.position.y + tileSize - roadSize.y / 2, -5);
+                              new Vector2(x, y))&& !ExistRoad(1)) {
+            previewRoad.transform.position = new Vector3(previewRoad.transform.position.x,
+                                                         previewRoad.transform.position.y + tileSize - roadSize.y / 2, -5);
             previewRoad.transform.rotation = Quaternion.Euler(0, 0, 0);
+            Debug.Log("Top");
             return 1;
-        } else if (IsInTriangle(new Vector2(0, 0),
-                              new Vector2(tileSize / 2, tileSize / 2),
-                              new Vector2(tileSize, 0),
-                              new Vector2(x, y))) {
-            previewRoad.transform.position = new Vector3(previewRoad.transform.position.x, previewRoad.transform.position.y - roadSize.y / 2, -5);
+        } else if (IsInTriangle(new Vector2(tileSize, 0),
+                               new Vector2(Mathf.Round(tileSize / 2), Mathf.Round(tileSize / 2)),
+                               new Vector2(tileSize, tileSize),
+                               new Vector2(x, y))&& !ExistRoad(2)) {
+            previewRoad.transform.position = new Vector3(previewRoad.transform.position.x + tileSize + roadSize.y / 2,
+                                                         previewRoad.transform.position.y, -5);
+            previewRoad.transform.rotation = Quaternion.Euler(0, 0, 90);
+            Debug.Log("Right");
+            return 2;
+        } else if (IsInTriangle(new Vector2(tileSize, 0),
+                             new Vector2(Mathf.Round(tileSize / 2), Mathf.Round(tileSize / 2)),
+                             new Vector2(0, 0),
+                             new Vector2(x, y)) && !ExistRoad(3)) {
+            previewRoad.transform.position = new Vector3(previewRoad.transform.position.x,
+                                                         previewRoad.transform.position.y - roadSize.y / 2, -5);
             previewRoad.transform.rotation = Quaternion.Euler(0, 0, 0);
+            Debug.Log("Bottom");
             return 3;
         } else {
-            previewRoad.transform.position = new Vector3(previewRoad.transform.position.x + tileSize + roadSize.y / 2, previewRoad.transform.position.y, -5);
-            previewRoad.transform.rotation = Quaternion.Euler(0, 0, 90);
-            return 2;
+            Debug.Log("None");
+            return 4;
         }
     }
     private bool IsInTriangle(Vector2 a, Vector2 b, Vector2 c, Vector2 point) {

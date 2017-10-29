@@ -136,8 +136,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefabs:
-  - {fileID: 1857485903264640, guid: cbed96e4822e181438b67fa1719b1229, type: 2}
-  - {fileID: 1031015483558548, guid: bf262e5240fcecf489effe5710233912, type: 2}
+  - {fileID: 1815147827992564, guid: 54d810e29748e2d4292ddbe52fe3481d, type: 2}
+  - {fileID: 1902817227367796, guid: 73c1696dc6eaf0b4ca6c70716a69b29c, type: 2}
   camMove: {fileID: 1433625185}
 --- !u!4 &1179307620
 Transform:
@@ -254,7 +254,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tileSize: 0
-  moveArea: 25
-  camSpeed: 1
+  moveArea: 50
+  camSpeed: 5
   roadPrefabs:
-  - {fileID: 0}
+  - {fileID: 1630468627659722, guid: 999b3ef0f8b581741bd721e678ed5c2e, type: 2}
