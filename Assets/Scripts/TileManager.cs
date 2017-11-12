@@ -7,10 +7,67 @@ public class TileManager : MonoBehaviour {
     private bool[] roadsAround = new bool[4];
     [SerializeField]
     private bool active= false;
-    public void UpdateTileState(int pos) {
+    public static float tileBoundSize;
+    public static Vector2 roadSize;
+    public const float TileSize = 2.048f;
+    // Use this for initialization
+    void Start()
+    {
+    }
+
+    // Update is called once per frame
+    void Update()
+    {
+        if (active)
+        {
+            GetComponent<SpriteRenderer>().color = new Color(0, 0, 0);
+        }
+    }
+    public void UpdateTileState(int pos) { // 0 - left, 1 - up, 2 - right, 3 - bottom
         roadsAround[pos] = true;
         active = CheckTileState();
     }
+    public static void CreateRoad(int type, int pos, RaycastHit hit, GameObject prefab, GameObject previewRoad)
+    {
+        GameObject road = Instantiate(prefab);
+        road.transform.position = previewRoad.transform.position;
+        road.transform.rotation = previewRoad.transform.rotation;
+        hit.collider.gameObject.GetComponent<TileManager>().UpdateTileState(pos);
+        string[] name = hit.collider.gameObject.name.Split('_');
+        int[] nameInt = { int.Parse(name[0]), int.Parse(name[1]) };
+        Debug.Log(nameInt[0] + " " + nameInt[1]);
+        //Debug.Log(maxY); // ? тут что ?
+        switch (pos)
+        {
+            case 0:
+                if ((nameInt[0] - 1) >= 0)
+                {
+                    GameObject.Find((nameInt[0] - 1) + "_" + nameInt[1]).GetComponent<TileManager>().UpdateTileState(2);
+                }
+                break;
+            case 1:
+                if ((nameInt[1] + 1) < GameObject.Find("LevelManager").GetComponent<LevelManager>().MapSizeY)
+                {
+                    GameObject.Find(nameInt[0] + "_" + (nameInt[1] + 1)).GetComponent<TileManager>().UpdateTileState(3);
+                }
+                break;
+            case 2:
+                if ((nameInt[0] + 1) < GameObject.Find("LevelManager").GetComponent<LevelManager>().MapSizeX)
+                {
+                    GameObject.Find((nameInt[0] + 1) + "_" + nameInt[1]).GetComponent<TileManager>().UpdateTileState(0);
+                }
+                break;
+            case 3:
+                if ((nameInt[1] - 1) >= 0)
+                {
+                    GameObject.Find(nameInt[0] + "_" + (nameInt[1] - 1)).GetComponent<TileManager>().UpdateTileState(1);
+                }
+                break;
+            default:
+                break;
+        }
+    }
+
     private bool CheckTileState() {
         for (int i = 0; i < roadsAround.Length; i++) {
             if (!roadsAround[i]) {
@@ -22,15 +79,5 @@ public class TileManager : MonoBehaviour {
     public bool CheckRoad(int pos) {
         return roadsAround[pos];
     }
-    // Use this for initialization
-    void Start () {
-		
-	}
-	
-	// Update is called once per frame
-	void Update () {
-        if (active) {
-            GetComponent<SpriteRenderer>().color = new Color(0, 0, 0);
-        }
-    }
+
 }

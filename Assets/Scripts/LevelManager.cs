@@ -5,9 +5,6 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour {
 
     [SerializeField]
-    private GameObject[] tilePrefabs;
-    [SerializeField]
-    private CamMove camMove;
     private int[,] map = {
         {0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1},
         {1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1},
@@ -17,20 +14,22 @@ public class LevelManager : MonoBehaviour {
         {1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1},
         {1,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1}
     };
+    [SerializeField]
+    public GameObject[] tilePrefabs;
+    [SerializeField]
+    private CamMove camMove;
     public int MapSizeX {
         get { return map.GetLength(0); }
     }
     public int MapSizeY {
         get { return map.GetLength(0); }
     }
-public float TileSize {
-    get { return tilePrefabs[0].GetComponent<SpriteRenderer>().sprite.bounds.size.x; }
-}
 // Use this for initialization
 void Start() {
     CreateLevel();
-    camMove.SetMax(map.GetLength(1) * TileSize - Camera.main.ViewportToWorldPoint(new Vector3(1, 0)).x * 2, map.GetLength(0) * TileSize - Camera.main.ViewportToWorldPoint(new Vector3(0, 1)).y * 2);
-    camMove.tileSize = TileSize;
+    camMove.SetMax(map.GetLength(1) * TileManager.TileSize - Camera.main.ViewportToWorldPoint(new Vector3(1, 0)).x * 2, map.GetLength(0) * TileManager.TileSize - Camera.main.ViewportToWorldPoint(new Vector3(0, 1)).y * 2);
+    TileManager.tileBoundSize = TileManager.TileSize;
+    camMove.GetComponent<BoxCollider>().size = new Vector3(TileManager.TileSize, TileManager.TileSize, 0.2f);
 }
 
 // Update is called once per frame
@@ -46,7 +45,7 @@ private void CreateLevel() {
 }
 private void PlaceTitles(Vector2 initPos, int x, int y, int type) {
     GameObject newTile = Instantiate(tilePrefabs[type]);
-    newTile.transform.position = new Vector2(initPos.x + (x * TileSize), initPos.y + (y * TileSize));
+    newTile.transform.position = new Vector2(initPos.x + (x * TileManager.TileSize), initPos.y + (y * TileManager.TileSize));
     newTile.name = x + "_" + y;
 }
 
