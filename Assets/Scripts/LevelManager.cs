@@ -5,15 +5,7 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour {
 
     [SerializeField]
-    private int[,] map = {
-        {0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1},
-        {1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1},
-        {0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0},
-        {0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0},
-        {1,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1},
-        {1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1},
-        {1,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1}
-    };
+    private int[,] map;
     [SerializeField]
     public GameObject[] tilePrefabs;
     [SerializeField]
@@ -24,12 +16,22 @@ public class LevelManager : MonoBehaviour {
     public int MapSizeY {
         get { return map.GetLength(0); }
     }
+    LevelManager()
+    {
+        map = new int[,]{
+        { 0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1},
+        { 1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1},
+        { 0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0},
+        { 0,0,0,0,1,0,0,0,1,0,0,0,1,0,0,0,1,0},
+        { 1,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1},
+        { 1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1},
+        { 1,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1}
+        };
+    }
 // Use this for initialization
 void Start() {
     CreateLevel();
     camMove.SetMax(map.GetLength(1) * TileManager.TileSize - Camera.main.ViewportToWorldPoint(new Vector3(1, 0)).x * 2, map.GetLength(0) * TileManager.TileSize - Camera.main.ViewportToWorldPoint(new Vector3(0, 1)).y * 2);
-    TileManager.tileBoundSize = TileManager.TileSize;
-    camMove.GetComponent<BoxCollider>().size = new Vector3(TileManager.TileSize, TileManager.TileSize, 0.2f);
 }
 
 // Update is called once per frame
@@ -47,6 +49,7 @@ private void PlaceTitles(Vector2 initPos, int x, int y, int type) {
     GameObject newTile = Instantiate(tilePrefabs[type]);
     newTile.transform.position = new Vector2(initPos.x + (x * TileManager.TileSize), initPos.y + (y * TileManager.TileSize));
     newTile.name = x + "_" + y;
+    //newTile.GetComponent<BoxCollider>().size = new Vector3(TileManager.tileBoundSize, TileManager.tileBoundSize, 0.2f);
 }
 
 }

@@ -2,15 +2,20 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileManager : MonoBehaviour {
-    [SerializeField]
-    private bool[] roadsAround = new bool[4];
-    [SerializeField]
-    private bool active= false;
-    public static float tileBoundSize;
-    public static Vector2 roadSize;
+public class TileManager : MonoBehaviour
+{
     public const float TileSize = 2.048f;
+    [SerializeField]
+    private bool[] roadsAround;
+    [SerializeField]
+    private bool active;
+    public static Vector2 roadSize;
     // Use this for initialization
+    TileManager()
+    {
+        roadsAround = new bool[4];
+        active = false;
+    }
     void Start()
     {
     }
@@ -26,6 +31,7 @@ public class TileManager : MonoBehaviour {
     public void UpdateTileState(int pos) { // 0 - left, 1 - up, 2 - right, 3 - bottom
         roadsAround[pos] = true;
         active = CheckTileState();
+        Debug.Log(active);
     }
     public static void CreateRoad(int type, int pos, RaycastHit hit, GameObject prefab, GameObject previewRoad)
     {
@@ -41,27 +47,19 @@ public class TileManager : MonoBehaviour {
         {
             case 0:
                 if ((nameInt[0] - 1) >= 0)
-                {
                     GameObject.Find((nameInt[0] - 1) + "_" + nameInt[1]).GetComponent<TileManager>().UpdateTileState(2);
-                }
                 break;
             case 1:
                 if ((nameInt[1] + 1) < GameObject.Find("LevelManager").GetComponent<LevelManager>().MapSizeY)
-                {
                     GameObject.Find(nameInt[0] + "_" + (nameInt[1] + 1)).GetComponent<TileManager>().UpdateTileState(3);
-                }
                 break;
             case 2:
                 if ((nameInt[0] + 1) < GameObject.Find("LevelManager").GetComponent<LevelManager>().MapSizeX)
-                {
                     GameObject.Find((nameInt[0] + 1) + "_" + nameInt[1]).GetComponent<TileManager>().UpdateTileState(0);
-                }
                 break;
             case 3:
                 if ((nameInt[1] - 1) >= 0)
-                {
                     GameObject.Find(nameInt[0] + "_" + (nameInt[1] - 1)).GetComponent<TileManager>().UpdateTileState(1);
-                }
                 break;
             default:
                 break;
@@ -74,6 +72,7 @@ public class TileManager : MonoBehaviour {
                 return false;
             }
         }
+        //GameObject building = Instantiate();
         return true;
     }
     public bool CheckRoad(int pos) {

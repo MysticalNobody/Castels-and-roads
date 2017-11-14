@@ -6,35 +6,48 @@ public class CamMove : MonoBehaviour {
     private Ray ray;
     private RaycastHit hit;
     [SerializeField]
-    private float moveArea = 50;
+    private float moveArea;
     [SerializeField]
-    private float camSpeed = 5;
-    float maxX, maxY;
+    private float camSpeed;
+    private float maxX, maxY;
+    private Vector3 oldMousePos;
     [SerializeField]
-    public GameObject roadPrefab;
+    private GameObject roadPrefab;
+    private GameObject previewRoad;
     public void SetMax(float x, float y) {
         maxX = x;
         maxY = y;
     }
+    CamMove()
+    {
+        moveArea = 50;
+        camSpeed = 5;
+    }
     // Use this for initialization
     void Start()
     {
+        oldMousePos = new Vector3(0, 0, 0);
+        TileManager.roadSize = roadPrefab.GetComponent<BoxCollider>().size;
+        Debug.Log(TileManager.roadSize.y);
     }
 
     // Update is called once per frame
     void Update() {
         Move(Input.mousePosition.x, Input.mousePosition.y);
         DetectCollision();
+        oldMousePos = Input.mousePosition;
     }
     private void DetectCollision() {
         ray = Camera.main.ScreenPointToRay(Input.mousePosition);
         if (Physics.Raycast(ray, out hit))
         {
-            GameObject previewRoad = Instantiate(roadPrefab);
-            TileManager.roadSize = roadPrefab.GetComponent<BoxCollider>().bounds.size;
-            int posRoad = PosRoad(hit.collider.transform.position, cursorWorldPos, hit, previewRoad);
-            if (posRoad < 4 ) {
-                if (Input.GetKeyDown(KeyCode.Mouse0)) {
+            if (!previewRoad)
+                previewRoad = Instantiate(roadPrefab);
+            int posRoad = PosRoad(hit.collider.transform.position, cursorWorldPos, hit);
+            if (posRoad < 4)
+            {
+                if (Input.GetKeyDown(KeyCode.Mouse0))
+                {
                     if (!hit.collider.GetComponent<TileManager>().CheckRoad(posRoad))
                     {
                         TileManager.CreateRoad(0, posRoad, hit, roadPrefab, previewRoad);
@@ -44,23 +57,20 @@ public class CamMove : MonoBehaviour {
         }
     }
 
-    private int PosRoad(Vector3 obj, Vector2 cursor, RaycastHit hit, GameObject previewRoad)
+    private int PosRoad(Vector3 obj, Vector2 cursor, RaycastHit hit)
     {
         float x, y;
         x = cursor.x - obj.x;
         y = cursor.y - obj.y;
         previewRoad.transform.position = obj;
-        //Debug.Log(x + " " + y);
-        Vector2 roadPos = new Vector2(previewRoad.transform.position.x - obj.x, previewRoad.transform.position.y - obj.y);
         if (IsInTriangle(new Vector2(0, 0),
                               new Vector2(0, TileManager.TileSize),
                               new Vector2(Mathf.Round(TileManager.TileSize / 2), Mathf.Round(TileManager.TileSize / 2)),
                               new Vector2(x, y)) && !ExistRoad(0, hit))
         {
-            previewRoad.transform.position = new Vector3(previewRoad.transform.position.x + TileManager.roadSize.y / 2,
-                                                         previewRoad.transform.position.y, -5);
+            previewRoad.transform.position = new Vector3(previewRoad.transform.position.x + TileManager.roadSize.y/2,
+            previewRoad.transform.position.y, -5);
             previewRoad.transform.rotation = Quaternion.Euler(0, 0, 90);
-            Debug.Log("Left");
             return 0;
 
         }
@@ -72,7 +82,6 @@ public class CamMove : MonoBehaviour {
             previewRoad.transform.position = new Vector3(previewRoad.transform.position.x,
                                                          previewRoad.transform.position.y + TileManager.TileSize - TileManager.roadSize.y / 2, -5);
             previewRoad.transform.rotation = Quaternion.Euler(0, 0, 0);
-            Debug.Log("Top");
             return 1;
         }
         else if (IsInTriangle(new Vector2(TileManager.TileSize, 0),
@@ -83,7 +92,6 @@ public class CamMove : MonoBehaviour {
             previewRoad.transform.position = new Vector3(previewRoad.transform.position.x + TileManager.TileSize + TileManager.roadSize.y / 2,
                                                          previewRoad.transform.position.y, -5);
             previewRoad.transform.rotation = Quaternion.Euler(0, 0, 90);
-            Debug.Log("Right");
             return 2;
         }
         else if (IsInTriangle(new Vector2(TileManager.TileSize, 0),
@@ -94,12 +102,10 @@ public class CamMove : MonoBehaviour {
             previewRoad.transform.position = new Vector3(previewRoad.transform.position.x,
                                                          previewRoad.transform.position.y - TileManager.roadSize.y / 2, -5);
             previewRoad.transform.rotation = Quaternion.Euler(0, 0, 0);
-            Debug.Log("Bottom");
             return 3;
         }
         else
         {
-            Debug.Log("None");
             return 4;
         }
     }
