@@ -117,6 +117,8 @@ GameObject:
   m_Component:
   - component: {fileID: 1179307620}
   - component: {fileID: 1179307619}
+  - component: {fileID: 1179307621}
+  - component: {fileID: 1179307622}
   m_Layer: 0
   m_Name: LevelManager
   m_TagString: Untagged
@@ -135,10 +137,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 10254ecbdb837cf499739e088055e5d7, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tilePrefabs:
-  - {fileID: 1815147827992564, guid: 54d810e29748e2d4292ddbe52fe3481d, type: 2}
-  - {fileID: 1902817227367796, guid: 73c1696dc6eaf0b4ca6c70716a69b29c, type: 2}
-  camMove: {fileID: 1433625185}
 --- !u!4 &1179307620
 Transform:
   m_ObjectHideFlags: 0
@@ -152,6 +150,29 @@ Transform:
   m_Father: {fileID: 0}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1179307621
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1179307618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 872c27958cd525644bcec06ff7a89bc6, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  type: 0
+--- !u!114 &1179307622
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1179307618}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 545e6814fd38c71438fa418da15c82dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1433625179
 GameObject:
   m_ObjectHideFlags: 0
@@ -255,4 +276,3 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveArea: 50
   camSpeed: 5
-  roadPrefab: {fileID: 1630468627659722, guid: 999b3ef0f8b581741bd721e678ed5c2e, type: 2}

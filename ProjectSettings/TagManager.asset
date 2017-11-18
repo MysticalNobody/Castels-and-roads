@@ -41,3 +41,12 @@ TagManager:
   - name: Default
     uniqueID: 0
     locked: 0
+  - name: Tiles
+    uniqueID: 779052789
+    locked: 0
+  - name: roads
+    uniqueID: 3975081835
+    locked: 0
+  - name: Houses
+    uniqueID: 1309405841
+    locked: 0

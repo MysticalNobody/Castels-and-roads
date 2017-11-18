@@ -9,43 +9,55 @@ Prefab:
     m_Modifications: []
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
-  m_RootGameObject: {fileID: 1141620969015138}
+  m_RootGameObject: {fileID: 1902817227367796}
   m_IsPrefabParent: 1
---- !u!1 &1141620969015138
+--- !u!1 &1902817227367796
 GameObject:
   m_ObjectHideFlags: 0
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
   serializedVersion: 5
   m_Component:
-  - component: {fileID: 4147539248916920}
-  - component: {fileID: 212929865053691030}
-  m_Layer: 0
-  m_Name: masterskaya (1)
+  - component: {fileID: 4486908610691388}
+  - component: {fileID: 212838736224772484}
+  - component: {fileID: 114144366148704610}
+  m_Layer: 8
+  m_Name: tayl2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
---- !u!4 &4147539248916920
+--- !u!4 &4486908610691388
 Transform:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1141620969015138}
+  m_GameObject: {fileID: 1902817227367796}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 5.7411613, y: -2.3102188, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!212 &212929865053691030
+--- !u!114 &114144366148704610
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1902817227367796}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6c77995ace789c742ae27e4e4b7a7c63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+--- !u!212 &212838736224772484
 SpriteRenderer:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 100100000}
-  m_GameObject: {fileID: 1141620969015138}
+  m_GameObject: {fileID: 1902817227367796}
   m_Enabled: 1
   m_CastShadows: 0
   m_ReceiveShadows: 0
@@ -69,10 +81,10 @@ SpriteRenderer:
   m_AutoUVMaxDistance: 0.5
   m_AutoUVMaxAngle: 89
   m_LightmapParameters: {fileID: 0}
-  m_SortingLayerID: 0
-  m_SortingLayer: 0
+  m_SortingLayerID: 779052789
+  m_SortingLayer: 1
   m_SortingOrder: 0
-  m_Sprite: {fileID: 21300000, guid: 15d1b82082b444a46a863de467105308, type: 3}
+  m_Sprite: {fileID: 21300000, guid: 75473ccacd384c441a435b650b6e9c5c, type: 3}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
   m_FlipX: 0
   m_FlipY: 0

@@ -5,78 +5,78 @@ using UnityEngine;
 public class TileManager : MonoBehaviour
 {
     public const float TileSize = 2.048f;
-    [SerializeField]
-    private bool[] roadsAround;
-    [SerializeField]
+    private GameObject[] roadsAround; // 0 - left, 1 - top, 2 - right, 3 - bottom
     private bool active;
-    public static Vector2 roadSize;
-    // Use this for initialization
-    TileManager()
+    private GameObject house;
+
+    public bool Active
     {
-        roadsAround = new bool[4];
-        active = false;
+        get
+        {
+            return active;
+        }
+
+        set
+        {
+            active = value;
+        }
     }
+    public GameObject[] RoadsAround
+    {
+        get
+        {
+            return roadsAround;
+        }
+
+        set
+        {
+            roadsAround = value;
+        }
+    }
+    public GameObject House
+    {
+        get
+        {
+            return house;
+        }
+
+        set
+        {
+            house = value;
+        }
+    }
+
+    public TileManager()
+    {
+        RoadsAround = new GameObject[4] { null, null, null, null};
+        House = null;
+        Active = false;
+    }
+
     void Start()
     {
     }
-
-    // Update is called once per frame
     void Update()
     {
-        if (active)
+        if (CheckTileState() && !Active)
         {
-            GetComponent<SpriteRenderer>().color = new Color(0, 0, 0);
+            Building.CreateBuilding(this.gameObject, Random.Range(0, 4));
+            Active = true;
         }
     }
-    public void UpdateTileState(int pos) { // 0 - left, 1 - up, 2 - right, 3 - bottom
-        roadsAround[pos] = true;
-        active = CheckTileState();
-        Debug.Log(active);
-    }
-    public static void CreateRoad(int type, int pos, RaycastHit hit, GameObject prefab, GameObject previewRoad)
+    
+    public bool CheckRoad(int pos)
     {
-        GameObject road = Instantiate(prefab);
-        road.transform.position = previewRoad.transform.position;
-        road.transform.rotation = previewRoad.transform.rotation;
-        hit.collider.gameObject.GetComponent<TileManager>().UpdateTileState(pos);
-        string[] name = hit.collider.gameObject.name.Split('_');
-        int[] nameInt = { int.Parse(name[0]), int.Parse(name[1]) };
-        Debug.Log(nameInt[0] + " " + nameInt[1]);
-        //Debug.Log(maxY); // ? тут что ?
-        switch (pos)
-        {
-            case 0:
-                if ((nameInt[0] - 1) >= 0)
-                    GameObject.Find((nameInt[0] - 1) + "_" + nameInt[1]).GetComponent<TileManager>().UpdateTileState(2);
-                break;
-            case 1:
-                if ((nameInt[1] + 1) < GameObject.Find("LevelManager").GetComponent<LevelManager>().MapSizeY)
-                    GameObject.Find(nameInt[0] + "_" + (nameInt[1] + 1)).GetComponent<TileManager>().UpdateTileState(3);
-                break;
-            case 2:
-                if ((nameInt[0] + 1) < GameObject.Find("LevelManager").GetComponent<LevelManager>().MapSizeX)
-                    GameObject.Find((nameInt[0] + 1) + "_" + nameInt[1]).GetComponent<TileManager>().UpdateTileState(0);
-                break;
-            case 3:
-                if ((nameInt[1] - 1) >= 0)
-                    GameObject.Find(nameInt[0] + "_" + (nameInt[1] - 1)).GetComponent<TileManager>().UpdateTileState(1);
-                break;
-            default:
-                break;
-        }
+        return RoadsAround[pos];
     }
-
     private bool CheckTileState() {
-        for (int i = 0; i < roadsAround.Length; i++) {
-            if (!roadsAround[i]) {
+        for (int i = 0; i < RoadsAround.Length; i++) {
+            if (!RoadsAround[i]) {
                 return false;
             }
         }
         //GameObject building = Instantiate();
         return true;
-    }
-    public bool CheckRoad(int pos) {
-        return roadsAround[pos];
     }
 
 }
