@@ -101,20 +101,28 @@ public class Road : MonoBehaviour {
         switch (pos)
         {
             case 0:
-                if ((nameInt[0] - 1) >= 0)
+                if ((nameInt[0] - 1) >= 0 && GameObject.Find((nameInt[0] - 1) + "_" + nameInt[1]).GetComponent<TileManager>())
+                {
                     GameObject.Find((nameInt[0] - 1) + "_" + nameInt[1]).GetComponent<TileManager>().RoadsAround[2] = road;
+                }
                 break;
             case 1:
-                if ((nameInt[1] + 1) < GameObject.Find("LevelManager").GetComponent<LevelManager>().MapSizeY)
+                if (GameObject.Find(nameInt[0] + "_" + (nameInt[1] + 1)).GetComponent<TileManager>() && (nameInt[1] + 1) < LevelManager.MapSizeY)
+                {
                     GameObject.Find(nameInt[0] + "_" + (nameInt[1] + 1)).GetComponent<TileManager>().RoadsAround[3] = road;
+                }
                 break;
             case 2:
-                if ((nameInt[0] + 1) < GameObject.Find("LevelManager").GetComponent<LevelManager>().MapSizeX)
+                if (GameObject.Find((nameInt[0] + 1) + "_" + nameInt[1]).GetComponent<TileManager>() && (nameInt[0] + 1) < LevelManager.MapSizeX)
+                {
                     GameObject.Find((nameInt[0] + 1) + "_" + nameInt[1]).GetComponent<TileManager>().RoadsAround[0] = road;
+                }
                 break;
             case 3:
-                if ((nameInt[1] - 1) >= 0)
+                if ((nameInt[1] - 1) >= 0 && GameObject.Find(nameInt[0] + "_" + (nameInt[1] - 1)).GetComponent<TileManager>())
+                {
                     GameObject.Find(nameInt[0] + "_" + (nameInt[1] - 1)).GetComponent<TileManager>().RoadsAround[1] = road;
+                }
                 break;
             default:
                 break;

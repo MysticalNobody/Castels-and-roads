@@ -5,16 +5,16 @@ using UnityEngine;
 public class LevelManager : MonoBehaviour
 {
     private static GameObject[] TilePrefabs;
-    private int[,] map;
+    private static int[,] map;
 
-    public int MapSizeX {
+    public static int MapSizeX {
+        get { return map.GetLength(1); }
+    }
+    public static int MapSizeY {
         get { return map.GetLength(0); }
     }
-    public int MapSizeY {
-        get { return map.GetLength(0); }
-    }
-
-    public LevelManager()
+    
+    static LevelManager()
     {
         map = new int[,]{
         { 0,0,0,0,1,0,0,0,1,0,0,0,0,1,0,0,0,1},
@@ -25,9 +25,6 @@ public class LevelManager : MonoBehaviour
         { 1,0,0,0,0,0,0,0,1,0,0,0,0,1,0,0,0,1},
         { 1,0,0,0,0,0,0,0,1,1,0,0,0,1,0,0,0,1}
         };
-    }
-    static LevelManager()
-    {
         TilePrefabs = new GameObject[2];
     }
 
@@ -56,7 +53,6 @@ public class LevelManager : MonoBehaviour
     GameObject newTile = Instantiate(TilePrefabs[type]);
     newTile.transform.position = new Vector2(initPos.x + (x * TileManager.TileSize), initPos.y + (y * TileManager.TileSize));
     newTile.name = x + "_" + y;
-    //newTile.GetComponent<BoxCollider>().size = new Vector3(TileManager.tileBoundSize, TileManager.tileBoundSize, 0.2f);
 }
 
 }

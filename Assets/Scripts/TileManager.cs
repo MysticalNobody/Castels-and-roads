@@ -70,12 +70,11 @@ public class TileManager : MonoBehaviour
         return RoadsAround[pos];
     }
     private bool CheckTileState() {
-        for (int i = 0; i < RoadsAround.Length; i++) {
+        for (int i = 0; i < 4; i++) {
             if (!RoadsAround[i]) {
                 return false;
             }
         }
-        //GameObject building = Instantiate();
         return true;
     }
 
