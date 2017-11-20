@@ -5,9 +5,11 @@ using UnityEngine;
 public class Building : MonoBehaviour
 {
     public static GameObject[] buildingPrefabs; // 0 - дом, 1 - ферма, 2 - мастерская, 3 - крепость, 4 - аванпост
+    private static List<GameObject> mergedBuildings;
     [SerializeField]
     private int type;
-    private bool merged;
+    private int level;
+    private bool isChecked;
 
     public int Type
     {
@@ -21,26 +23,41 @@ public class Building : MonoBehaviour
             type = value;
         }
     }
-    public bool Merged
+    public bool IsChecked
     {
         get
         {
-            return merged;
+            return isChecked;
         }
 
         set
         {
-            merged = value;
+            isChecked = value;
+        }
+    }
+    public int Level
+    {
+        get
+        {
+            return level;
+        }
+
+        set
+        {
+            level = value;
         }
     }
 
     public Building()
     {
         type = -1;
+        level = 0;
+        isChecked = false;
     }
     static Building()
     {
         buildingPrefabs = new GameObject[5];
+        mergedBuildings = new List<GameObject>();
     }
 
     void Awake()
@@ -61,6 +78,34 @@ public class Building : MonoBehaviour
     {
         return tile.GetComponent<TileManager>().House.GetComponent<Building>().Type;
     }
+    public static int GetLevelOfBuilding(GameObject tile) 
+    {
+        return tile.GetComponent<TileManager>().House.GetComponent<Building>().Level;
+    }
+    public static void SetLevelOfBuilding(GameObject tile, int level)
+    {
+        tile.GetComponent<TileManager>().House.GetComponent<Building>().Level = level;
+    }
+    public static bool GetIsChecked(GameObject tile)
+    {
+        return tile.GetComponent<TileManager>().House.GetComponent<Building>().IsChecked;
+    }
+    public static void SetIsChecked(GameObject tile, bool isChecked)
+    {
+        tile.GetComponent<TileManager>().House.GetComponent<Building>().IsChecked = isChecked;
+    }
+
+    public static void CalculateLevelOfBuilding(GameObject obj)
+    {
+        mergedBuildings.Add(obj);
+        SetIsChecked(obj, true);
+        for (int i = 0; i < 4; i++)
+        {
+            GameObject newObj = CheckBuildingsAround(obj, i);
+            if (newObj && !GetIsChecked(newObj))
+                CalculateLevelOfBuilding(newObj);
+        }
+    }
     public static GameObject CreateBuilding(GameObject obj, int type)
     {
         GameObject building = Instantiate(buildingPrefabs[type]);
@@ -73,6 +118,15 @@ public class Building : MonoBehaviour
             if (newObj)
                 MergeTwoBuildings(obj, newObj);
         }
+        CalculateLevelOfBuilding(obj);
+        int level = mergedBuildings.Count;
+        foreach (GameObject go in mergedBuildings)
+        {
+            SetLevelOfBuilding(go, level);
+            SetIsChecked(go, false);
+        }
+        mergedBuildings = new List<GameObject>();
+        Debug.Log("Level of building: "+level);
         return building;
     }
     private static GameObject CreateMergedBuilding(int type, Vector3 pos)
@@ -127,7 +181,5 @@ public class Building : MonoBehaviour
         GameObject house = CreateMergedBuilding(GetTypeOfBuilding(obj1), newpos);
         obj1.GetComponent<TileManager>().House.GetComponent<SpriteRenderer>().enabled = false;
         obj2.GetComponent<TileManager>().House.GetComponent<SpriteRenderer>().enabled = false;
-        obj1.GetComponent<TileManager>().House.GetComponent<Building>().Merged = true;
-        obj2.GetComponent<TileManager>().House.GetComponent<Building>().Merged = true;
     }
 }
