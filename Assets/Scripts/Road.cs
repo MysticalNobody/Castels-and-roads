@@ -92,7 +92,7 @@ public class Road : MonoBehaviour {
     }
     public static GameObject CreateRoad(int pos, GameObject obj)
     {
-        GameObject road = Instantiate(Road.RoadPrefab);
+        GameObject road = Instantiate(RoadPrefab);
         road.transform.position = PreviewRoad.transform.position;
         road.transform.rotation = PreviewRoad.transform.rotation;
         obj.GetComponent<TileManager>().RoadsAround[pos] = road;

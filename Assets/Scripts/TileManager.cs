@@ -2,74 +2,59 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class TileManager : MonoBehaviour
-{
+public class TileManager : MonoBehaviour {
     public const float TileSize = 2.048f;
     private GameObject[] roadsAround; // 0 - left, 1 - top, 2 - right, 3 - bottom
     private bool active;
+    public GameObject owner;
     private GameObject house;
-
-    public bool Active
-    {
-        get
-        {
+    public bool Active {
+        get {
             return active;
         }
 
-        set
-        {
+        set {
             active = value;
         }
     }
-    public GameObject[] RoadsAround
-    {
-        get
-        {
+    public GameObject[] RoadsAround {
+        get {
             return roadsAround;
         }
 
-        set
-        {
+        set {
             roadsAround = value;
         }
     }
-    public GameObject House
-    {
-        get
-        {
+    public GameObject House {
+        get {
             return house;
         }
 
-        set
-        {
+        set {
             house = value;
         }
     }
 
-    public TileManager()
-    {
-        RoadsAround = new GameObject[4] { null, null, null, null};
+    public TileManager() {
+        RoadsAround = new GameObject[4] { null, null, null, null };
         House = null;
         Active = false;
     }
 
-    void Start()
-    {
+    void Start() {
     }
-    void Update()
-    {
-        if (CheckTileState() && !Active)
-        {
-            Building.CreateBuilding(this.gameObject, Random.Range(0, 5));
+    void Update() {
+        if (CheckTileState() && !Active) {
+            Building.CreateBuilding(gameObject, GameController.picker.value);
             Active = true;
         }
     }
-    
-    public bool CheckRoad(int pos)
-    {
+
+    public bool CheckRoad(int pos) {
         return RoadsAround[pos];
     }
-    private bool CheckTileState() {
+    public bool CheckTileState() {
         for (int i = 0; i < 4; i++) {
             if (!RoadsAround[i]) {
                 return false;

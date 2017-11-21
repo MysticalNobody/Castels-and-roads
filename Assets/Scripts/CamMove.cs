@@ -40,6 +40,11 @@ public class CamMove : MonoBehaviour {
                     {
                         GameObject go = hit.collider.gameObject;
                         Road.CreateRoad(posRoad, go);
+                        GameController.SwitchTurn();
+                        if (hit.collider.GetComponent<TileManager>().CheckTileState() && !hit.collider.GetComponent<TileManager>().Active) {
+                            GameController.players[GameController.Turn].GetComponent<PlayerController>().AddTile(hit.collider.gameObject);
+                            hit.collider.gameObject.GetComponent<TileManager>().owner = GameController.players[GameController.Turn];
+                        }
                     }
                 }
             }
