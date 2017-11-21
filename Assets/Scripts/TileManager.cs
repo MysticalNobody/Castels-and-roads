@@ -46,7 +46,7 @@ public class TileManager : MonoBehaviour {
     }
     void Update() {
         if (CheckTileState() && !Active) {
-            Building.CreateBuilding(gameObject, GameController.picker.value);
+            Building.CreateBuilding(gameObject, GameController.chosenBuilding);
             Active = true;
         }
     }
