@@ -60,7 +60,7 @@ public class TileManager : MonoBehaviour
     {
         if (CheckTileState() && !Active)
         {
-            Building.CreateBuilding(this.gameObject, Random.Range(0, 4));
+            Building.CreateBuilding(this.gameObject, Random.Range(0, 5));
             Active = true;
         }
     }
