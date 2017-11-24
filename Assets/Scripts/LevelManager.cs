@@ -67,7 +67,6 @@ public class LevelManager : MonoBehaviour
         minmapCam.transform.position = new Vector3(GameObject.Find(MapSizeX / 2 + "_" + MapSizeY / 2).transform.position.x,
                                                    GameObject.Find(MapSizeX / 2 + "_" + MapSizeY / 2).transform.position.y,
                                                    minmapCam.transform.position.z);
-        GameController.minimap.transform.localScale = new Vector3(0.5f, 0.5f, 0.5f);
         GameController.minimap.enabled = false;
     }
     private void CreateLevel()

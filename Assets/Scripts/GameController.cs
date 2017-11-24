@@ -11,12 +11,12 @@ public class GameController : MonoBehaviour {
     public static Text labelBuilding;
     public static Text score;
     public static RawImage minimap;
-    enum Buildings{
-    House = 0,
-    Ferma = 1,
-    Manufactory = 2,
-    Castle = 3,
-    Outpost = 4
+    enum Buildings {
+        House = 0,
+        Ferma = 1,
+        Manufactory = 2,
+        Castle = 3,
+        Outpost = 4
     }
     public static int Turn {
         get {
@@ -34,28 +34,18 @@ public class GameController : MonoBehaviour {
         minimap = GameObject.Find("Minimap").GetComponent<RawImage>();
     }
     void Update() {
-        if (Input.GetKeyDown(KeyCode.F1))
-        {
+        if (Input.GetKeyDown(KeyCode.F1)) {
             chosenBuilding = 0;
-        }
-        else if (Input.GetKeyDown(KeyCode.F2))
-        {
+        } else if (Input.GetKeyDown(KeyCode.F2)) {
             chosenBuilding = 1;
-        }
-        else if (Input.GetKeyDown(KeyCode.F3))
-        {
+        } else if (Input.GetKeyDown(KeyCode.F3)) {
             chosenBuilding = 2;
-        }
-        else if (Input.GetKeyDown(KeyCode.F4))
-        {
+        } else if (Input.GetKeyDown(KeyCode.F4)) {
             chosenBuilding = 3;
-        }
-        else if (Input.GetKeyDown(KeyCode.F5))
-        {
+        } else if (Input.GetKeyDown(KeyCode.F5)) {
             chosenBuilding = 4;
-        }
-        else if (Input.GetKeyDown(KeyCode.F10)) {
-            minimap.enabled = true;
+        } else if (Input.GetKeyDown(KeyCode.F10)) {
+            minimap.enabled = minimap.enabled ? false : true;
         }
         for (int i = 0; i < players.Length; i++) {
             players[i].GetComponent<PlayerController>().UpdatePoints();
