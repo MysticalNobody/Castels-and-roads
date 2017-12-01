@@ -47,14 +47,15 @@ public class GameController : MonoBehaviour {
         } else if (Input.GetKeyDown(KeyCode.F10)) {
             minimap.enabled = minimap.enabled ? false : true;
         }
-        for (int i = 0; i < players.Length; i++) {
+        for (int i = 0; i < players.Length; i++)
+        {
             players[i].GetComponent<PlayerController>().UpdatePoints();
             players[i].GetComponent<PlayerController>().UpdateTileColor();
         }
         score.text = "Player1: " + players[0].GetComponent<PlayerController>().Points + " vs Player2: " + players[1].GetComponent<PlayerController>().Points;
         labelBuilding.text = "Now chosen " + (Buildings)chosenBuilding;
     }
-    public static void SwitchTurn() {
+    public static void SwitchTurn() { 
         labelInfo.text = "Player " + (currentPlayer + 1) + " is currently playing";
         if (currentPlayer < players.Length - 1) {
             currentPlayer += 1;

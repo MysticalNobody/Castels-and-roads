@@ -33,6 +33,7 @@ public class LevelManager : MonoBehaviour
     }
     void Update()
     {
+
     }
     void GenerateMap()
     {

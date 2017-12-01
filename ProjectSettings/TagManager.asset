@@ -50,3 +50,6 @@ TagManager:
   - name: Houses
     uniqueID: 1309405841
     locked: 0
+  - name: Buttons
+    uniqueID: 517424423
+    locked: 0

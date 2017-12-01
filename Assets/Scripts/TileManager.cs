@@ -45,10 +45,6 @@ public class TileManager : MonoBehaviour {
     void Start() {
     }
     void Update() {
-        if (CheckTileState() && !Active) {
-            Building.CreateBuilding(gameObject, GameController.chosenBuilding);
-            Active = true;
-        }
     }
 
     public bool CheckRoad(int pos) {
